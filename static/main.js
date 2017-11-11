@@ -35,6 +35,7 @@
                 $log.log(data, status);
               } else if (status === 200){
                 $log.log(data);
+                $scope.wordcounts = data;
                 $timeout.cancel(timeout);
                 return false;
               }
@@ -47,6 +48,8 @@
       }
     }
 
-  ]);
+  ]).config(function($interpolateProvider) {
+        $interpolateProvider.startSymbol('{r').endSymbol('r}');
+    });
 
 }());
