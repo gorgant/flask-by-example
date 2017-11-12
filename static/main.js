@@ -35,6 +35,7 @@
       function getWordCount(jobID) {
 
         var timeout = "";
+        var timeoutCount = 0;
 
         var poller = function() {
           // fire another request
@@ -42,6 +43,14 @@
             success(function(data, status, headers, config) {
               if(status === 202) {
                 $log.log(data, status);
+                timeoutCount++;
+                if(timeoutCount>9) {
+                  $timeout.cancel(timeout);
+                  $scope.loading = false;
+                  $scope.submitButtonText = "Submit";
+                  $scope.urlerror = true;
+                  return false;
+                }
               } else if (status === 200){
                 $log.log(data);
                 $scope.loading = false;
