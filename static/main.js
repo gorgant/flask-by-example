@@ -9,6 +9,9 @@
 
       $scope.submitButtonText = 'Submit';
       $scope.loading = false;
+      $scope.urlerror = false;
+
+
 
       $scope.getResults = function() {
         // get the URL from the input
@@ -22,11 +25,11 @@
             $scope.wordcounts = null;
             $scope.loading = true;
             $scope.submitButtonText = 'Loading...';
+            $scope.urlerror = false;
           }).
           error(function(error) {
             $log.log(error);
           });
-        $log.log("stuff happening post post")
       };
 
       function getWordCount(jobID) {
@@ -50,6 +53,12 @@
               // continue to call the poller() function every 2 seconds
               // until the timeout is cancelled
               timeout = $timeout(poller, 2000);
+            }).
+            error(function(error) {
+              $log.log(error);
+              $scope.loading = false;
+              $scope.submitButtonText = "Submit";
+              $scope.urlerror = true;
             });
         };
         poller();
